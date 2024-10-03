@@ -27,7 +27,7 @@ import os
 import logging
 import unittest
 from decimal import Decimal
-from service.models import Product, Category, db
+from service.models import Product, Category, db, DataValidationError
 from service import app
 from tests.factories import ProductFactory
 
@@ -136,6 +136,14 @@ class TestProductModel(unittest.TestCase):
         self.assertEqual(products[0].id, original_id)
         self.assertEqual(products[0].description, "testing")
 
+    def test_update_a_product_without_id(self):
+        """It should rais Update called without ID field"""
+        product = ProductFactory()
+        product.id = None
+        product.create()
+        product.id=None
+        self.assertRaises(DataValidationError, product.update)
+        
     def test_delete_a_product(self):
         """It should Delete a Product"""
         product = ProductFactory()
@@ -194,3 +202,21 @@ class TestProductModel(unittest.TestCase):
         for product in found:
             self.assertEqual(product.category, category)
 
+    # def test_serialize_a_product(self):
+    #     """It should Serialize a product to dict"""
+    #     product = ProductFactory()
+    #     product.create()
+    #     product_dict=product.serialize()
+    #     self.assertEqual(product.name,product_dict["name"])
+
+    def test_deserialize_a_product_with_available_not_bool(self):
+        """It should rais Invalid type for boolean [available]:"""
+        data = {
+            "name": "Smartphone",
+            "description": "A smartphone with many features",
+            "price": "299.99",
+            "available": "yes",  # Invalid boolean
+            "category": "ELECTRONICS",
+        }
+        product=ProductFactory()
+        self.assertRaises(DataValidationError, product.deserialize(data))
