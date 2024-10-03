@@ -179,6 +179,17 @@ class TestProductRoutes(TestCase):
         # assert that data["name"] equals the test_product.name
         self.assertEqual(data["name"],test_product.name)
 
+    def test_get_product_not_found(self):
+        """It should return 404 not found' was not found."""
+        # make a self.client.get request to the API endpoint and store the result in the variable named response
+        response=self.client.get(f"{BASE_URL}/0")
+        # assert that the resp.status_code is status.HTTP_200_OK
+        self.assertEqual(response.status_code,status.HTTP_404_NOT_FOUND)
+        # get the data from resp.get_json()
+        data=response.get_json()
+        # assert that data["name"] equals the test_product.name
+        self.assertIn("was not found",data["message"])
+
     ######################################################################
     # Utility functions
     ######################################################################
