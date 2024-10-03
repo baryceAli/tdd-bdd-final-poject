@@ -211,12 +211,9 @@ class TestProductModel(unittest.TestCase):
 
     def test_deserialize_a_product_with_available_not_bool(self):
         """It should rais Invalid type for boolean [available]:"""
-        data = {
-            "name": "Smartphone",
-            "description": "A smartphone with many features",
-            "price": "299.99",
-            "available": "yes",  # Invalid boolean
-            "category": "ELECTRONICS",
-        }
         product=ProductFactory()
+        product.create()
+        data=product.serialize()
+        data["available"]="ABC"
         self.assertRaises(DataValidationError, product.deserialize(data))
+
