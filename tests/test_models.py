@@ -202,13 +202,6 @@ class TestProductModel(unittest.TestCase):
         for product in found:
             self.assertEqual(product.category, category)
 
-    # def test_serialize_a_product(self):
-    #     """It should Serialize a product to dict"""
-    #     product = ProductFactory()
-    #     product.create()
-    #     product_dict=product.serialize()
-    #     self.assertEqual(product.name,product_dict["name"])
-
     def test_deserialize_a_product_with_available_not_bool(self):
         """It should rais Invalid type for boolean [available]"""
         product = ProductFactory()
@@ -229,16 +222,35 @@ class TestProductModel(unittest.TestCase):
         }
         self.assertRaises(DataValidationError, product.deserialize, data)
 
-    def test_deserialize_a_product_with_invalid_attribute(self):
-        """It should rais Invalid attribute"""
+    def test_deserialize_a_product_with_bad_or_empty_data(self):
+        """It should rais body of request contained bad or no data"""
         product = ProductFactory()
         data = {
+            "id":1,
             "name": "Smartphone",
             "description": "A modern smartphone",
-            "price": "999.99",
+            "price": "5.5",
             "available":True,
-            "category": "invalid attribute",
+            "category": "Tools",
         }
-        self.assertRaises(DataValidationError, product.deserialize, data)
+        self.assertRaises(DataValidationError, product.deserialize,data)
 
-    
+    def test_find_by_price(self):
+        """It should Find Products by Price"""
+        product = ProductFactory()
+        product.create()
+        product.price=5
+        
+        found = Product.find_by_price(5)
+        self.assertEqual(product.name,found[0].name)
+        
+    def test_find_by_price_string(self):
+        """It should Find Products by Price even if I input string price"""
+        product = ProductFactory()
+        product.create()
+        product.price=5
+        
+        found = Product.find_by_price("5")
+        self.assertEqual(product.name,found[0].name)
+        
+        
