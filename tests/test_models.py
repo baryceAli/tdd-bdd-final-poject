@@ -143,6 +143,7 @@ class TestProductModel(unittest.TestCase):
         product.create()
         product.id = None
         self.assertRaises(DataValidationError, product.update)
+
     def test_delete_a_product(self):
         """It should Delete a Product"""
         product = ProductFactory()
@@ -176,7 +177,6 @@ class TestProductModel(unittest.TestCase):
         for product in found:
             self.assertEqual(product.name, name)
 
-
     def test_find_by_availability(self):
         """It should Find Products by Availability"""
         products = ProductFactory.create_batch(10)
@@ -205,9 +205,10 @@ class TestProductModel(unittest.TestCase):
         """It should rais Invalid type for boolean [available]"""
         product = ProductFactory()
         product.create()
-        data=product.serialize()
+        data = product.serialize()
         data["available"] = "ABC"
-        self.assertRaises(DataValidationError, product.deserialize,data)
+        self.assertRaises(DataValidationError, product.deserialize, data)
+
     def test_deserialize_a_product_with_invalid_attribute(self):
         """It should rais Invalid attribute"""
         product = ProductFactory()
@@ -215,7 +216,7 @@ class TestProductModel(unittest.TestCase):
             "name": "Smartphone",
             "description": "A modern smartphone",
             "price": "999.99",
-            "available":True,
+            "available": True,
             "category": "invalid attribute",
         }
         self.assertRaises(DataValidationError, product.deserialize, data)
@@ -224,31 +225,29 @@ class TestProductModel(unittest.TestCase):
         """It should rais body of request contained bad or no data"""
         product = ProductFactory()
         data = {
-            "id":1,
+            "id": 1,
             "name": "Smartphone",
             "description": "A modern smartphone",
             "price": "5.5",
-            "available":True,
+            "available": True,
             "category": "Tools",
         }
-        self.assertRaises(DataValidationError, product.deserialize,data)
+        self.assertRaises(DataValidationError, product.deserialize, data)
 
     def test_find_by_price(self):
         """It should Find Products by Price"""
         product = ProductFactory()
         product.create()
-        product.price=5
-        
+        product.price = 5
         found = Product.find_by_price(5)
-        self.assertEqual(product.name,found[0].name)
-        
+        self.assertEqual(product.name, found[0].name)
+
     def test_find_by_price_string(self):
         """It should Find Products by Price even if I input string price"""
         product = ProductFactory()
         product.create()
-        product.price=5
-        
+        product.price = 5
         found = Product.find_by_price("5")
-        self.assertEqual(product.name,found[0].name)
+        self.assertEqual(product.name, found[0].name)
         
         
