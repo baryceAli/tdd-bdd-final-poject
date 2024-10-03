@@ -141,9 +141,8 @@ class TestProductModel(unittest.TestCase):
         product = ProductFactory()
         product.id = None
         product.create()
-        product.id=None
+        product.id = None
         self.assertRaises(DataValidationError, product.update)
-        
     def test_delete_a_product(self):
         """It should Delete a Product"""
         product = ProductFactory()
@@ -207,9 +206,8 @@ class TestProductModel(unittest.TestCase):
         product = ProductFactory()
         product.create()
         data=product.serialize()
-        data["available"]="ABC"
+        data["available"] = "ABC"
         self.assertRaises(DataValidationError, product.deserialize,data)
-
     def test_deserialize_a_product_with_invalid_attribute(self):
         """It should rais Invalid attribute"""
         product = ProductFactory()
