@@ -59,4 +59,4 @@ class ProductFactory(factory.Factory):
             Category.TOOLS,
         ]
     )
-    # Add code to create Fake Products
+    
