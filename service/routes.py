@@ -122,13 +122,13 @@ def get_products(product_id):
     app.logger.info("Request to Retrieve a product with id [%s]", product_id)
 
     # use the Product.find() method to find the product
-    product=Product.find(product_id)
+    product = Product.find(product_id)
     # abort() with a status.HTTP_404_NOT_FOUND if it cannot be found
     if not product:
         abort(status.HTTP_404_NOT_FOUND, f"Product with id '{product_id}' was not found.")
     # return the serialize() version of the product with a return code of status.HTTP_200_OK
-    app.logger.info("Returning product: %s",product.name)
-    return product.serialize(), status.HTTP_200_OK    
+    app.logger.info("Returning product: %s", product.name)
+    return product.serialize(), status.HTTP_200_OK
 
 ######################################################################
 # U P D A T E   A   P R O D U C T
