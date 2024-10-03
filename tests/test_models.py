@@ -249,5 +249,3 @@ class TestProductModel(unittest.TestCase):
         product.price = 5
         found = Product.find_by_price("5")
         self.assertEqual(product.name, found[0].name)
-        
-        
