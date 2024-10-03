@@ -210,10 +210,20 @@ class TestProductModel(unittest.TestCase):
     #     self.assertEqual(product.name,product_dict["name"])
 
     def test_deserialize_a_product_with_available_not_bool(self):
-        """It should rais Invalid type for boolean [available]:"""
-        product=ProductFactory()
+        """It should rais Invalid type for boolean [available]"""
+        product = ProductFactory()
         product.create()
         data=product.serialize()
         data["available"]="ABC"
-        self.assertRaises(DataValidationError, product.deserialize(data))
+        self.assertRaises(DataValidationError, product.deserialize,data)
 
+    # def test_deserialize_a_product_with_invalid_attribute(self):
+    #     """It should rais Invalid attribute"""
+    #     product = ProductFactory()
+    #     product.create()
+    #     data=product.serialize()
+    #     data["available"]="ABC"
+    #     data["invalid"]="attribute"
+    #     self.assertRaises(DataValidationError, product.deserialize,data)
+
+    
