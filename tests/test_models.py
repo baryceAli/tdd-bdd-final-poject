@@ -217,13 +217,28 @@ class TestProductModel(unittest.TestCase):
         data["available"]="ABC"
         self.assertRaises(DataValidationError, product.deserialize,data)
 
-    # def test_deserialize_a_product_with_invalid_attribute(self):
-    #     """It should rais Invalid attribute"""
-    #     product = ProductFactory()
-    #     product.create()
-    #     data=product.serialize()
-    #     data["available"]="ABC"
-    #     data["invalid"]="attribute"
-    #     self.assertRaises(DataValidationError, product.deserialize,data)
+    def test_deserialize_a_product_with_invalid_attribute(self):
+        """It should rais Invalid attribute"""
+        product = ProductFactory()
+        data = {
+            "name": "Smartphone",
+            "description": "A modern smartphone",
+            "price": "999.99",
+            "available":True,
+            "category": "invalid attribute",
+        }
+        self.assertRaises(DataValidationError, product.deserialize, data)
+
+    def test_deserialize_a_product_with_invalid_attribute(self):
+        """It should rais Invalid attribute"""
+        product = ProductFactory()
+        data = {
+            "name": "Smartphone",
+            "description": "A modern smartphone",
+            "price": "999.99",
+            "available":True,
+            "category": "invalid attribute",
+        }
+        self.assertRaises(DataValidationError, product.deserialize, data)
 
     
